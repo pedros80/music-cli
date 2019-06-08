@@ -20,7 +20,7 @@ class GMan:
             for filename in fnmatch.filter(filenames, '*.mp4'):
                 src = os.path.join(root, filename)
                 dst = self.get_destination_file(src)
-                if not os.path.isfile(dst):
+                if not os.path.isfile(dst) and input("Process file - {} ? [y/N]".format(dst)).lower()[0] == 'y':
                     self.process_file(src, dst)
 
     def get_clean_file_name(self, filename):
@@ -38,12 +38,11 @@ class GMan:
         return os.path.join(self.dir_name, self.get_clean_file_name(dst))
 
     def process_file(self, src, dst):
-        print("Processing file - {}".format(dst))
+        print("Processing - {}".format(dst))
         shutil.copyfile(src, dst)
         mp3 = dst.replace('.mp4', '.mp3')
         subprocess.call(self.command.format(dst, mp3), shell=True)
         os.remove(dst)
-
 
 if __name__ == '__main__':
     g = GMan()
