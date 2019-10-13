@@ -3,17 +3,20 @@ import sys
 
 class TidySounds:
 
-	def __init__(self):
-		self.files = {'urls': [], 'fxps': [], 'empty_dirs': []}
+	def __init__(self, root):
+		self.files = {'urls': [], 'fxps': [], 'empty_dirs': [], 'DS_STORES': []}
+		self.root = root
 
-	def parse_files(self, root):
-		for subdir, dirs, files in os.walk(root):
+	def parse_files(self):
+		for subdir, dirs, files in os.walk(self.root):
 			for file in files:
 				filepath = os.path.join(subdir, file)
 				if file.endswith('.url'):
 					self.files['urls'].append(filepath)
 				elif file.endswith('.fxp'):
 					self.files['fxps'].append(filepath)
+				elif file == '.DS_STORE':
+					self.files['DS_STORES'].append(filepath)
 				elif os.path.isdir(filepath) and not os.listdir(filepath):
 					self.files['empty_dir'].append(filepath)
 
@@ -32,9 +35,9 @@ class TidySounds:
 			print('Deleting {}'.format(filepath))
 			os.remove(filepath)
 
-	def main(self, root='.'):
+	def main(self):
 
-		self.parse_files(root)
+		self.parse_files()
 		self.process_files()
 
 
@@ -45,5 +48,5 @@ if __name__ == '__main__':
 	else:
 		root = '.'
 
-	ts = TidySounds()
-	ts.main(root)
+	ts = TidySounds(root)
+	ts.main()
