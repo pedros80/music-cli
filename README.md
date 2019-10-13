@@ -29,3 +29,6 @@ Requres python3
 
 ## TidySounds
 Finds all the files we don't want; currently `url`, `fxp` (serum presets) and empty directories in the `Sounds` directory and nuke 'em
+
+## FindDupes
+Find all duplicated files and nuke all but one of 'em...

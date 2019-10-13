@@ -9,6 +9,11 @@ class TidySounds:
 
 	def parse_files(self):
 		for subdir, dirs, files in os.walk(self.root):
+			for directory in dirs:
+				dirpath = os.path.join(subdir, directory)
+				if not os.listdir(dirpath):
+					self.files['empty_dirs'].append(dirpath)
+
 			for file in files:
 				filepath = os.path.join(subdir, file)
 				if file.endswith('.url'):
@@ -17,8 +22,6 @@ class TidySounds:
 					self.files['fxps'].append(filepath)
 				elif file == '.DS_STORE':
 					self.files['DS_STORES'].append(filepath)
-				elif os.path.isdir(filepath) and not os.listdir(filepath):
-					self.files['empty_dir'].append(filepath)
 
 	def process_files(self):
 		for tidy_type in self.files:
@@ -33,13 +36,14 @@ class TidySounds:
 	def delete_type(self, tidy_type):
 		for filepath in self.files[tidy_type]:
 			print('Deleting {}'.format(filepath))
-			os.remove(filepath)
+			try:
+				os.remove(filepath)
+			except IsADirectoryError:
+				os.rmdir(filepath)
 
 	def main(self):
-
 		self.parse_files()
 		self.process_files()
-
 
 if __name__ == '__main__':
 	
