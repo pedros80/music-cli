@@ -26,3 +26,6 @@ Finds all the zip files from [SampleSwap](https://sampleswap.org/index.php "Samp
 Need to replace your SampleSwap username (the prefix for the downloaded zip file) and any paths.
 
 Requres python3
+
+## TidySounds
+Finds all the files we don't want; currently `url`, `fxp` (serum presets) and empty directories in the `Sounds` directory and nuke 'em
